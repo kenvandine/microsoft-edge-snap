@@ -28,6 +28,7 @@ plugs:
 apps:
   microsoft-edge:
     command: usr/bin/microsoft-edge-stable
+    command-chain: [edge.launcher]
     common-id: microsoft-edge.desktop
     desktop: microsoft-edge.desktop
     extensions: [gnome]
@@ -57,6 +58,11 @@ apps:
     - mpris
 
 parts:
+  launcher:
+    plugin: dump
+    source: launcher
+    override-build: |
+      cp edge.launcher $CRAFT_PART_INSTALL/
   microsoft-edge:
     plugin: nil
     parse-info: [usr/share/appdata/microsoft-edge.appdata.xml]
