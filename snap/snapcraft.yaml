@@ -27,8 +27,7 @@ plugs:
 
 apps:
   microsoft-edge-beta:
-    command: usr/bin/microsoft-edge-beta
-    command-chain: [edge.launcher]
+    command: edge.launcher
     common-id: microsoft-edge-beta.desktop
     desktop: microsoft-edge-beta.desktop
     extensions: [gnome]
@@ -99,7 +98,6 @@ parts:
       - usr/lib/*/libxcb-util*
       - usr/lib/*/libxcb-xinput*
       - usr/lib/*/libxkbcommon-x11*
-      - usr/bin/microsoft-edge*
       - opt/microsoft
       - usr/share/appdata/microsoft-edge*
       - microsoft*.desktop
