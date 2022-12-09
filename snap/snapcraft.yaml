@@ -28,6 +28,7 @@ plugs:
 apps:
   microsoft-edge:
     command: usr/bin/microsoft-edge-beta
+    command-chain: [edge.launcher]
     common-id: microsoft-edge-beta.desktop
     desktop: microsoft-edge-beta.desktop
     extensions: [gnome]
@@ -57,6 +58,11 @@ apps:
     - mpris
 
 parts:
+  launcher:
+    plugin: dump
+    source: launcher
+    override-build: |
+      cp edge.launcher $CRAFT_PART_INSTALL/
   microsoft-edge:
     plugin: nil
     parse-info: [usr/share/appdata/microsoft-edge-beta.appdata.xml]
