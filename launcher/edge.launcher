@@ -9,19 +9,19 @@ REALHOME=$(getent passwd $(id -u) | cut -d ':' -f 6)
 # across revisions of the snap. This addresses profile corruption when the snap
 # is refreshed while running, until a proper solution is implemented in snapd.
 # Ref: https://launchpad.net/bugs/1616650
-if [ ! -d "$SNAP_USER_COMMON/microsoft-edge-beta" ]; then
-  if [ -d "$SNAP_USER_DATA/.config/microsoft-edge-beta" ]; then
-    mv "$SNAP_USER_DATA/.config/microsoft-edge-beta" "$SNAP_USER_COMMON/"
+if [ ! -d "$SNAP_USER_COMMON/microsoft-edge-dev" ]; then
+  if [ -d "$SNAP_USER_DATA/.config/microsoft-edge-dev" ]; then
+    mv "$SNAP_USER_DATA/.config/microsoft-edge-dev" "$SNAP_USER_COMMON/"
   fi
 fi
 
 # When running the snap for the first time, try and locate an existing
-# microsoft-edge-beta config in $HOME/.config/microsoft-edge-beta, and import it if it was
-# created by an older version of microsoft-edge-beta (the profile data format is not
+# microsoft-edge-dev config in $HOME/.config/microsoft-edge-dev, and import it if it was
+# created by an older version of microsoft-edge-dev (the profile data format is not
 # guaranteed to be forward-compatible). This requires the personal-files plug
 # to be connected.
-if [ ! -d "$SNAP_USER_COMMON/microsoft-edge-beta" ]; then
-  CHROME_CONFIG="$REALHOME/.config/microsoft-edge-beta"
+if [ ! -d "$SNAP_USER_COMMON/microsoft-edge-dev" ]; then
+  CHROME_CONFIG="$REALHOME/.config/microsoft-edge-dev"
   if [ -d "$CHROME_CONFIG" ]; then
     PREF_FILE="$CHROME_CONFIG/Default/Preferences"
     if [ -r "$PREF_FILE" ]; then
@@ -35,7 +35,7 @@ if [ ! -d "$SNAP_USER_COMMON/microsoft-edge-beta" ]; then
           BLOCK_SIZE=$(stat -f -c %s $SNAP_USER_COMMON)
           AVAILABLE_SIZE=$(($AVAILABLE_BLOCKS*$BLOCK_SIZE))
           if [ $AVAILABLE_SIZE -gt $SIZE ]; then
-            printf "Importing existing microsoft-edge-beta profile from "
+            printf "Importing existing microsoft-edge-dev profile from "
             printf "$CHROME_CONFIG (version $VERSION)\n"
             TS1=$(date +%s.%3N)
             cp -R "$CHROME_CONFIG" "$SNAP_USER_COMMON/"
@@ -43,7 +43,7 @@ if [ ! -d "$SNAP_USER_COMMON/microsoft-edge-beta" ]; then
             T=$(printf "$TS1 $TS2" | awk '{printf "%.3f",$2-$1}')
             printf "Import done in $T s\n"
           else
-            printf "Not importing existing microsoft-edge-beta profile from "
+            printf "Not importing existing microsoft-edge-dev profile from "
             printf "$CHROME_CONFIG (version $VERSION) because there is not "
             printf "enough available space in $SNAP_USER_COMMON "
             printf "(required: $SIZE bytes / available: $AVAILABLE_SIZE bytes)"
@@ -56,7 +56,7 @@ if [ ! -d "$SNAP_USER_COMMON/microsoft-edge-beta" ]; then
 fi
 
 # Specify that no encrypted password store (keyring) should be used when the
-# password-manager-service interface is not plugged, because microsoft-edge-beta
+# password-manager-service interface is not plugged, because microsoft-edge-dev
 # won't fall back to the basic store (no encryption) if it fails to talk to
 # the default password store for the current desktop environment.
 # Ref: https://launchpad.net/bugs/1763829
@@ -67,7 +67,7 @@ if snapctl is-connected password-manager-service; then
   PASSWORD_STORE=
 fi
 
-# Allow microsoft-edge-beta to look for the flash player plugin inside the snap's
+# Allow microsoft-edge-dev to look for the flash player plugin inside the snap's
 # confinement. That .so file has to be extracted from the upstream flash
 # distribution (https://get.adobe.com/flashplayer/) and copied there.
 # Ref: https://launchpad.net/bugs/1771162
@@ -88,7 +88,7 @@ for arg in "$@"; do
 done
 
 if [ $WANT_TEMP_PROFILE -eq 0 ] ; then
-  exec "$SNAP/opt/microsoft/msedge-beta/microsoft-edge-beta" \
+  exec "$SNAP/opt/microsoft/msedge-dev/microsoft-edge-dev" \
     --password-store=$PASSWORD_STORE \
     $FLASH_OPTS \
     "$@"
@@ -96,7 +96,7 @@ else
   TEMP_PROFILE=$(mktemp -d)
   trap "rm -rf $TEMP_PROFILE" EXIT
   # we can't exec here as we need to clean-up the temporary profile
-  "$SNAP/opt/microsoft/msedge-beta/microsoft-edge-beta" \
+  "$SNAP/opt/microsoft/msedge-dev/microsoft-edge-dev" \
     --user-data-dir=$TEMP_PROFILE \
     --password-store=$PASSWORD_STORE \
     $FLASH_OPTS \

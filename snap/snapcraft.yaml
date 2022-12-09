@@ -1,5 +1,5 @@
-name: microsoft-edge-beta
-adopt-info: microsoft-edge-beta
+name: microsoft-edge-dev
+adopt-info: microsoft-edge-dev
 base: core22
 architectures:
 - amd64
@@ -20,20 +20,20 @@ plugs:
   browser-sandbox:
     allow-sandbox: true
     interface: browser-support
-  dot-config-microsoft-edge-beta:
+  dot-config-microsoft-edge-dev:
     interface: personal-files
     read:
-    - $HOME/.config/microsoft-edge-beta
+    - $HOME/.config/microsoft-edge-dev
 
 apps:
-  microsoft-edge-beta:
+  microsoft-edge-dev:
     command: edge.launcher
-    common-id: microsoft-edge-beta.desktop
-    desktop: microsoft-edge-beta.desktop
+    common-id: microsoft-edge-dev.desktop
+    desktop: microsoft-edge-dev.desktop
     extensions: [gnome]
     environment:
       CHROME_CONFIG_HOME: $SNAP_USER_COMMON
-      CHROME_DESKTOP: microsoft-edge-beta.desktop
+      CHROME_DESKTOP: microsoft-edge-dev.desktop
       DISABLE_WAYLAND: 1
     plugs:
     - audio-playback
@@ -62,27 +62,27 @@ parts:
     source: launcher
     override-build: |
       cp edge.launcher $CRAFT_PART_INSTALL/
-  microsoft-edge:
+  microsoft-edge-dev:
     plugin: nil
-    parse-info: [usr/share/appdata/microsoft-edge-beta.appdata.xml]
+    parse-info: [usr/share/appdata/microsoft-edge-dev.appdata.xml]
     build-packages:
       - dpkg-dev
     stage-packages:
-      - microsoft-edge-beta
+      - microsoft-edge-dev
       - libqt5core5a
       - libqt5gui5
       - libqt5widgets5
     override-build: |
       craftctl default
       # Set the snap version from the .deb package version
-      craftctl set version=$(dpkg-parsechangelog -l $CRAFT_PART_INSTALL/usr/share/doc/microsoft-edge-beta/changelog.gz -S Version | sed -e s/1://g)
+      craftctl set version=$(dpkg-parsechangelog -l $CRAFT_PART_INSTALL/usr/share/doc/microsoft-edge-dev/changelog.gz -S Version | sed -e s/1://g)
       # Fix xml formating error
-      echo "$(tail -n +2 $CRAFT_PART_INSTALL/usr/share/appdata/microsoft-edge-beta.appdata.xml)" > $CRAFT_PART_INSTALL/usr/share/appdata/microsoft-edge-beta.appdata.xml
+      echo "$(tail -n +2 $CRAFT_PART_INSTALL/usr/share/appdata/microsoft-edge-dev.appdata.xml)" > $CRAFT_PART_INSTALL/usr/share/appdata/microsoft-edge-dev.appdata.xml
       # Copy over the icon
       mkdir -p $CRAFT_PART_INSTALL/meta/gui
-      cp $CRAFT_PART_INSTALL/opt/microsoft/msedge-beta/product_logo_256_beta.png $CRAFT_PART_INSTALL/meta/gui/icon.png
+      cp $CRAFT_PART_INSTALL/opt/microsoft/msedge-dev/product_logo_256_dev.png $CRAFT_PART_INSTALL/meta/gui/icon.png
       # Install the desktop file, with the icon field munged
-      sed 's|Icon=microsoft-edge-beta|Icon=${SNAP}/meta/gui/icon.png|g' $CRAFT_PART_INSTALL/usr/share/applications/microsoft-edge-beta.desktop > $CRAFT_PART_INSTALL/microsoft-edge-beta.desktop
+      sed 's|Icon=microsoft-edge-dev|Icon=${SNAP}/meta/gui/icon.png|g' $CRAFT_PART_INSTALL/usr/share/applications/microsoft-edge-dev.desktop > $CRAFT_PART_INSTALL/microsoft-edge-dev.desktop
     prime:
       - usr/lib/*/libQt5*
       - usr/lib/*/libdouble-conversion*
