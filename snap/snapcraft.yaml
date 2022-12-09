@@ -26,7 +26,7 @@ plugs:
     - $HOME/.config/microsoft-edge-beta
 
 apps:
-  microsoft-edge:
+  microsoft-edge-beta:
     command: usr/bin/microsoft-edge-beta
     command-chain: [edge.launcher]
     common-id: microsoft-edge-beta.desktop
