@@ -64,6 +64,9 @@ parts:
       - dpkg-dev
     stage-packages:
       - microsoft-edge-beta
+      - libqt5core5a
+      - libqt5gui5
+      - libqt5widgets5
     override-build: |
       craftctl default
       # Set the snap version from the .deb package version
@@ -76,6 +79,20 @@ parts:
       # Install the desktop file, with the icon field munged
       sed 's|Icon=microsoft-edge-beta|Icon=${SNAP}/meta/gui/icon.png|g' $CRAFT_PART_INSTALL/usr/share/applications/microsoft-edge-beta.desktop > $CRAFT_PART_INSTALL/microsoft-edge-beta.desktop
     prime:
+      - usr/lib/*/libQt5*
+      - usr/lib/*/libdouble-conversion*
+      - usr/lib/*/libmd4c*
+      - usr/lib/*/libxcb-icccm*
+      - usr/lib/*/libxcb-image*
+      - usr/lib/*/libxcb-keysyms*
+      - usr/lib/*/libxcb-randr*
+      - usr/lib/*/libxcb-render-util*
+      - usr/lib/*/libxcb-shape*
+      - usr/lib/*/libxcb-xinerama*
+      - usr/lib/*/libxcb-xkb*
+      - usr/lib/*/libxcb-util*
+      - usr/lib/*/libxcb-xinput*
+      - usr/lib/*/libxkbcommon-x11*
       - usr/bin/microsoft-edge*
       - opt/microsoft
       - usr/share/appdata/microsoft-edge*
