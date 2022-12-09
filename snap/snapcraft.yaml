@@ -29,6 +29,7 @@ apps:
   microsoft-edge:
     command: usr/bin/microsoft-edge-stable
     common-id: microsoft-edge.desktop
+    desktop: microsoft-edge.desktop
     extensions: [gnome]
     environment:
       CHROME_CONFIG_HOME: $SNAP_USER_COMMON
@@ -78,3 +79,4 @@ parts:
       - usr/bin/microsoft-edge*
       - opt/microsoft
       - usr/share/appdata/microsoft-edge.appdata.xml
+      - microsoft*.desktop
