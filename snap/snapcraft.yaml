@@ -27,8 +27,7 @@ plugs:
 
 apps:
   microsoft-edge:
-    command: usr/bin/microsoft-edge-stable
-    command-chain: [edge.launcher]
+    command: edge.launcher
     common-id: microsoft-edge.desktop
     desktop: microsoft-edge.desktop
     extensions: [gnome]
@@ -99,7 +98,6 @@ parts:
       - usr/lib/*/libxcb-util*
       - usr/lib/*/libxcb-xinput*
       - usr/lib/*/libxkbcommon-x11*
-      - usr/bin/microsoft-edge*
       - opt/microsoft
       - usr/share/appdata/microsoft-edge.appdata.xml
       - microsoft*.desktop
