@@ -80,3 +80,4 @@ parts:
       - opt/microsoft
       - usr/share/appdata/microsoft-edge*
       - microsoft*.desktop
+      - meta/gui
