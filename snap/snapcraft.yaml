@@ -72,7 +72,7 @@ parts:
       echo "$(tail -n +2 $CRAFT_PART_INSTALL/usr/share/appdata/microsoft-edge.appdata.xml)" > $CRAFT_PART_INSTALL/usr/share/appdata/microsoft-edge.appdata.xml
       # Copy over the icon
       mkdir -p $CRAFT_PART_INSTALL/meta/gui
-      cp $CRAFT_PART_INSTALL/opt/microsoft/msedge/product_logo_128.png $CRAFT_PART_INSTALL/meta/gui/icon.png
+      cp $CRAFT_PART_INSTALL/opt/microsoft/msedge/product_logo_256.png $CRAFT_PART_INSTALL/meta/gui/icon.png
       # Install the desktop file, with the icon field munged
       sed 's|Icon=microsoft-edge|Icon=${SNAP}/meta/gui/icon.png|g' $CRAFT_PART_INSTALL/usr/share/applications/microsoft-edge.desktop > $CRAFT_PART_INSTALL/microsoft-edge.desktop
     prime:
@@ -80,3 +80,4 @@ parts:
       - opt/microsoft
       - usr/share/appdata/microsoft-edge.appdata.xml
       - microsoft*.desktop
+      - meta/gui
