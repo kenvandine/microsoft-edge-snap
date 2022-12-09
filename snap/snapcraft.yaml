@@ -1,0 +1,82 @@
+name: microsoft-edge
+adopt-info: microsoft-edge
+base: core22
+architectures:
+- amd64
+confinement: strict
+grade: stable
+assumes:
+- snapd2.43
+
+package-repositories:
+  - type: apt
+    url: https://packages.microsoft.com/repos/edge/
+    suites: [stable]
+    components: [main]
+    architectures: [amd64]
+    key-id: BC528686B50D79E339D3721CEB3E94ADBE1229CF
+
+plugs:
+  browser-sandbox:
+    allow-sandbox: true
+    interface: browser-support
+  dot-config-microsoft-edge:
+    interface: personal-files
+    read:
+    - $HOME/.config/microsoft-edge
+
+apps:
+  microsoft-edge:
+    command: usr/bin/microsoft-edge-stable
+    common-id: microsoft-edge.desktop
+    extensions: [gnome]
+    environment:
+      CHROME_CONFIG_HOME: $SNAP_USER_COMMON
+      CHROME_DESKTOP: microsoft-edge.desktop
+      DISABLE_WAYLAND: 1
+    plugs:
+    - audio-playback
+    - audio-record
+    - bluez
+    - camera
+    - cups-control
+    - gsettings
+    - home
+    - joystick
+    - mount-observe
+    - network
+    - network-manager
+    - password-manager-service
+    - raw-usb
+    - removable-media
+    - screen-inhibit-control
+    - u2f-devices
+    - upower-observe
+    slots:
+    - mpris
+
+parts:
+  microsoft-edge:
+    plugin: nil
+    parse-info: [usr/share/appdata/microsoft-edge.appdata.xml]
+    build-packages:
+      - dpkg-dev
+    stage-packages:
+      - microsoft-edge-stable
+    override-build: |
+      craftctl default
+      # Set the snap version from the .deb package version
+      craftctl set version=$(dpkg-parsechangelog -l $CRAFT_PART_INSTALL/usr/share/doc/microsoft-edge-stable/changelog.gz -S Version | sed -e s/1://g)
+      # Fix xml formating error
+      echo "$(tail -n +2 $CRAFT_PART_INSTALL/usr/share/appdata/microsoft-edge.appdata.xml)" > $CRAFT_PART_INSTALL/usr/share/appdata/microsoft-edge.appdata.xml
+      #tail -n +2 $CRAFT_PART_INSTALL/usr/share/appdata/microsoft-edge.appdata.xml > microsoft-edge.appdata.xml
+      #mv microsoft-edge.appdata.xml $CRAFT_PART_INSTALL/usr/share/appdata/
+      # Copy over the icon
+      mkdir -p $CRAFT_PART_INSTALL/meta/gui
+      cp $CRAFT_PART_INSTALL/opt/microsoft/msedge/product_logo_128.png $CRAFT_PART_INSTALL/meta/gui/icon.png
+      # Install the desktop file, with the icon field munged
+      sed 's|Icon=microsoft-edge|Icon=${SNAP}/meta/gui/icon.png|g' $CRAFT_PART_INSTALL/usr/share/applications/microsoft-edge.desktop > $CRAFT_PART_INSTALL/microsoft-edge.desktop
+    prime:
+      - usr/bin/microsoft-edge*
+      - opt/microsoft
+      - usr/share/appdata/microsoft-edge.appdata.xml
