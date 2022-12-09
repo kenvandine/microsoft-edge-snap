@@ -1,5 +1,5 @@
 name: microsoft-edge-beta
-adopt-info: microsoft-edge
+adopt-info: microsoft-edge-beta
 base: core22
 architectures:
 - amd64
@@ -62,7 +62,7 @@ parts:
     source: launcher
     override-build: |
       cp edge.launcher $CRAFT_PART_INSTALL/
-  microsoft-edge:
+  microsoft-edge-beta:
     plugin: nil
     parse-info: [usr/share/appdata/microsoft-edge-beta.appdata.xml]
     build-packages:
