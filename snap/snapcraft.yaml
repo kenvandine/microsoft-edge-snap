@@ -34,7 +34,6 @@ apps:
     environment:
       CHROME_CONFIG_HOME: $SNAP_USER_COMMON
       CHROME_DESKTOP: microsoft-edge.desktop
-      DISABLE_WAYLAND: 1
     plugs:
     - audio-playback
     - audio-record
@@ -72,6 +71,8 @@ parts:
       - libqt5core5a
       - libqt5gui5
       - libqt5widgets5
+      - libpipewire-0.3-0
+      - libwebrtc-audio-processing1
     override-build: |
       craftctl default
       # Set the snap version from the .deb package version
@@ -98,6 +99,9 @@ parts:
       - usr/lib/*/libxcb-util*
       - usr/lib/*/libxcb-xinput*
       - usr/lib/*/libxkbcommon-x11*
+      - usr/lib/*/libpipewire*
+      - usr/lib/*/spa*
+      - usr/lib/*/libwebrtc_audio_processing.so.*
       - opt/microsoft
       - usr/share/appdata/microsoft-edge.appdata.xml
       - microsoft*.desktop

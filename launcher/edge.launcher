@@ -77,6 +77,10 @@ if [ -e $FLASHSO ]; then
   FLASH_OPTS="--ppapi-flash-path=$FLASHSO --ppapi-flash-version=$FLASHVERSION"
 fi
 
+if [ ! -n "$DISABLE_WAYLAND" ] ; then
+  WAYLAND_OPTS="--enable-features=UseOzonePlatform --ozone-platform=wayland --enable-features=WebRTCPipeWireCapturer"
+fi
+
 WANT_TEMP_PROFILE=0
 for arg in "$@"; do
   shift
@@ -91,6 +95,7 @@ if [ $WANT_TEMP_PROFILE -eq 0 ] ; then
   exec "$SNAP//opt/microsoft/msedge/microsoft-edge" \
     --password-store=$PASSWORD_STORE \
     $FLASH_OPTS \
+    $WAYLAND_OPTS \
     "$@"
 else
   TEMP_PROFILE=$(mktemp -d)
@@ -100,5 +105,6 @@ else
     --user-data-dir=$TEMP_PROFILE \
     --password-store=$PASSWORD_STORE \
     $FLASH_OPTS \
+    $WAYLAND_OPTS \
     "$@"
 fi
