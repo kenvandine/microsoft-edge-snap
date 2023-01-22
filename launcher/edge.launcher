@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Initially copied from
 # https://git.launchpad.net/~chromium-team/chromium-browser/+git/snap-from-source/tree/launcher/chromium.launcher?h=stable
@@ -77,7 +77,7 @@ if [ -e $FLASHSO ]; then
   FLASH_OPTS="--ppapi-flash-path=$FLASHSO --ppapi-flash-version=$FLASHVERSION"
 fi
 
-if [ ! -n "$DISABLE_WAYLAND" ] ; then
+if [[ ! -n "$DISABLE_WAYLAND" && -n "$WAYLAND_DISPLAY" ]]; then
   WAYLAND_OPTS="--enable-features=UseOzonePlatform --ozone-platform=wayland --enable-features=WebRTCPipeWireCapturer"
 fi
 
@@ -91,7 +91,7 @@ for arg in "$@"; do
   set -- "$@" "$arg"
 done
 
-if [ $WANT_TEMP_PROFILE -eq 0 ] ; then
+if [ $WANT_TEMP_PROFILE -eq 0 ]; then
   exec "$SNAP//opt/microsoft/msedge/microsoft-edge" \
     --password-store=$PASSWORD_STORE \
     $FLASH_OPTS \
