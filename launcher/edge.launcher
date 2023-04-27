@@ -78,7 +78,7 @@ if [ -e $FLASHSO ]; then
 fi
 
 if [[ ! -n "$DISABLE_WAYLAND" && -n "$WAYLAND_DISPLAY" ]]; then
-  WAYLAND_OPTS="--enable-features=UseOzonePlatform --ozone-platform=wayland --enable-features=WebRTCPipeWireCapturer"
+  WAYLAND_OPTS="--enable-features=WaylandWindowDecorations,WebRTCPipeWireCapturer --ozone-platform-hint=auto"
 fi
 
 WANT_TEMP_PROFILE=0
