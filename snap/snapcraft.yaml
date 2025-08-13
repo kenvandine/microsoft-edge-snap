@@ -1,9 +1,11 @@
 name: microsoft-edge
 adopt-info: microsoft-edge
-base: core22
-architectures:
-- amd64
+base: core24
+platforms:
+  amd64:
+  arm64:
 confinement: strict
+license: Proprietary
 grade: stable
 assumes:
 - snapd2.43
@@ -69,11 +71,9 @@ parts:
       - dpkg-dev
     stage-packages:
       - microsoft-edge-stable
-      - libqt5core5a
-      - libqt5gui5
-      - libqt5widgets5
-      - libpipewire-0.3-0
-      - libwebrtc-audio-processing1
+      - libqt6core6t64
+      - libqt6gui6t64
+      - libqt6widgets6t64
     override-build: |
       craftctl default
       # Set the snap version from the .deb package version
@@ -86,23 +86,14 @@ parts:
       # Install the desktop file, with the icon field munged
       sed 's|Icon=microsoft-edge|Icon=${SNAP}/meta/gui/icon.png|g' $CRAFT_PART_INSTALL/usr/share/applications/microsoft-edge.desktop > $CRAFT_PART_INSTALL/microsoft-edge.desktop
     prime:
-      - usr/lib/*/libQt5*
+      - usr/lib/*/libQt6*
+      - -usr/lib/*/libQt6XcbQpa.so*
+      - usr/lib/*/libb2*
       - usr/lib/*/libdouble-conversion*
       - usr/lib/*/libmd4c*
-      - usr/lib/*/libxcb-icccm*
-      - usr/lib/*/libxcb-image*
-      - usr/lib/*/libxcb-keysyms*
       - usr/lib/*/libxcb-randr*
-      - usr/lib/*/libxcb-render-util*
-      - usr/lib/*/libxcb-shape*
       - usr/lib/*/libxcb-xinerama*
-      - usr/lib/*/libxcb-xkb*
-      - usr/lib/*/libxcb-util*
       - usr/lib/*/libxcb-xinput*
-      - usr/lib/*/libxkbcommon-x11*
-      - usr/lib/*/libpipewire*
-      - usr/lib/*/spa*
-      - usr/lib/*/libwebrtc_audio_processing.so.*
       - opt/microsoft
       - usr/share/appdata/microsoft-edge.appdata.xml
       - microsoft*.desktop
